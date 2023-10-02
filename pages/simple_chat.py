@@ -1,19 +1,15 @@
 import streamlit as st
 from langchain.chains import LLMChain
 from langchain.chat_models import ChatOpenAI
-from langchain.callbacks import StreamlitCallbackHandler
-from langchain.memory import ConversationBufferMemory
-from langchain.memory.chat_message_histories import StreamlitChatMessageHistory
 from langchain.prompts import (
     ChatPromptTemplate,
-    MessagesPlaceholder,
     SystemMessagePromptTemplate,
     HumanMessagePromptTemplate,
 )
 
 
-st.set_page_config(page_title="LangChain: Chat with search", page_icon="🦜")
-st.title("Chat")
+st.set_page_config(page_title="LangChain: Simple chatbot", page_icon="🦜")
+st.title("Chatbot")
 
 openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password")
 
@@ -21,30 +17,14 @@ openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password")
 llm_prompt = ChatPromptTemplate(
     messages=[
         SystemMessagePromptTemplate.from_template(
-            "Your name is samuel. You love talking about soccer. Respond to the user like an ordinary person would."
+            # This prompt tells the chatbot how to respond. Try modifying it.
+            "You are a helpful and patient physics tutor that uses the socratic method. Do not answer homework questions. Please help the student arrive at an answer to their question themselves."
         ),
-        MessagesPlaceholder(variable_name="chat_history"),
         HumanMessagePromptTemplate.from_template("{message}")
     ]
 )
 
-
-msgs = StreamlitChatMessageHistory()
-memory = ConversationBufferMemory(
-    chat_memory=msgs, return_messages=True, memory_key="chat_history"
-)
-if len(msgs.messages) == 0 or st.sidebar.button("Reset chat history"):
-    msgs.clear()
-    msgs.add_ai_message("How can I help you?")
-    st.session_state.steps = {}
-
-avatars = {"human": "user", "ai": "assistant"}
-for idx, msg in enumerate(msgs.messages):
-    with st.chat_message(avatars[msg.type]):
-        st.write(msg.content)
-
-
-if prompt := st.chat_input(placeholder="Ask anything"):
+if prompt := st.chat_input(placeholder="Ask anything."):
     st.chat_message("user").write(prompt)
 
     if not openai_api_key:
@@ -55,7 +35,6 @@ if prompt := st.chat_input(placeholder="Ask anything"):
     chain = LLMChain(
         llm=llm,
         prompt=llm_prompt,
-        memory=memory,
         verbose=True
     )
     with st.chat_message("assistant"):
