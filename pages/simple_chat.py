@@ -1,6 +1,5 @@
 import streamlit as st
 from langchain.chains import LLMChain
-from langchain.chains import LLMChain
 from langchain.chat_models import ChatOpenAI
 from langchain.callbacks import StreamlitCallbackHandler
 from langchain.memory import ConversationBufferMemory
