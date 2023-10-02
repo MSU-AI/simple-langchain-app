@@ -1,4 +1,4 @@
 
 
 
-[Launch app](https://msu-ai-langchain-demo.streamlit.app/)
+[Launch app](https://msuai-langchain-demo.streamlit.app/)
