@@ -6,6 +6,8 @@ from langchain.memory.chat_message_histories import StreamlitChatMessageHistory
 from langchain.tools import DuckDuckGoSearchRun
 import streamlit as st
 
+# CODE BELOW BASED ON https://langchain-chat-search.streamlit.app/
+
 st.set_page_config(page_title="LangChain: Chat with search", page_icon="🦜")
 st.title("🦜 LangChain: Chat with search")
 
